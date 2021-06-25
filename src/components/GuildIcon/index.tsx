@@ -1,17 +1,34 @@
 import React from 'react';
-import { Image } from 'react-native';
-import { theme } from '../../global/styles/themes';
+import { Image, View } from 'react-native';
 
 import { styles } from './styles';
+import DiscordSvg from '../../assets/discord.svg';
 
-export function GuildIcon() {
-    const uri = 'https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/124130699/original/f94dc5f2291f3a7647c8c2f106fbf22c61d5a029/make-a-discord-bot-for-you.png'
+const { CDN_IMAGE } = process.env;
+
+type Props = {
+    guildId: string;
+    iconId: string | null;
+}
+
+export function GuildIcon({ guildId,iconId }: Props) {
+    const uri = `${CDN_IMAGE}/icons/${guildId}/${iconId}.png`;
+    
     return(
-        <Image 
-            source={{uri}}
-            style={styles.image}
-            resizeMode='cover'        
-        />
-
+        <View style={styles.container}>
+            {
+                iconId ? 
+                <Image 
+                    source={{uri}}
+                    style={styles.image}
+                    resizeMode='cover'        
+                />
+                :
+                <DiscordSvg 
+                    width={40}
+                    height={40}
+                />
+            }
+        </View>
     );
 }
