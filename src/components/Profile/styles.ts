@@ -26,4 +26,11 @@ export const styles = StyleSheet.create ({
         fontFamily: theme.fonts.text400,
         color: theme.colors.highlight,
     },
-});
+    singOutButton: {
+        position: 'absolute',
+        marginLeft: '55%',
+        marginTop: '18%',
+        width: 100,
+        height: 40,
+      },
+    });

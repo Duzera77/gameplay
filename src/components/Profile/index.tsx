@@ -1,36 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
-    Alert,
+    KeyboardAvoidingView,
+    Platform,
     View, 
     Text
 } from 'react-native';
-import { useAuth } from '../../hooks/auth';
 import { RectButton } from 'react-native-gesture-handler';
+import { useAuth } from '../../hooks/auth';
 
-import { styles } from './styles';
+import { ExitButtons } from '../ExitButtons';
+import { ModalExit } from '../ModalExit';
 import { Avatar } from '../Avatar';
+import { styles } from './styles';
 
 export function Profile() {
+    const [openExitModal, setOpenExitModal ] = useState(false);
     const { user, singOut } = useAuth();
 
-    function handleSignOut() {
-        Alert.alert('Logout', 'Deseja sair do GamePlay?',
-        [
-            {
-                text: 'Não',
-                style: 'cancel'
-            },
-            {
-                text: 'Sim',
-                onPress: () => singOut()
-            }
-        ])
-    }
+    const handleOpenModal = ( ) => setOpenExitModal(true);
+
+    const handleCloseModal = ( ) => setOpenExitModal(false);
+
+    const handleSignOut = () => singOut();
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
 
-            <RectButton onPress={handleSignOut}>
+            <RectButton onPress={handleOpenModal}>
                 <Avatar urlImage={user.avatar} />
             </RectButton>
 
@@ -48,6 +47,15 @@ export function Profile() {
                     Hoje é dia de vitória
                 </Text>
             </View>
-        </View>
+            <ModalExit 
+                visible={openExitModal}  
+            >
+                <ExitButtons
+                    closeModal={handleCloseModal}
+                    signOut={handleSignOut}
+                    title={'Sim'}
+                />
+            </ModalExit>
+        </KeyboardAvoidingView>
     );
 }
